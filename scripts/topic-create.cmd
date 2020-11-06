@@ -1,0 +1,1 @@
+kafka-topics.bat --create --zookeeper localhost:2181 --topic samsa --partitions 8 --replication-factor 3

@@ -1,0 +1,32 @@
+{
+    "type": "record",
+    "name": "Hub_2",
+    "namespace": "br.com.produban.openbus.model.hub_2",
+    "doc": "Avro model to hub signals data",
+    "fields": [
+        {
+            "name": "apiApplicationName",
+            "type": "string"
+        },
+        {
+            "name": "apiEntrypointName",
+            "type": "string"
+        },
+        {
+            "name": "apiName",
+            "type": "string"
+        },
+        {
+            "name": "apiVersion",
+            "type": "string"
+        },
+        {
+            "name": "method",
+            "type": "string"
+        },
+        {
+            "name": "responseCode",
+            "type": "string"
+        }
+    ]
+}
