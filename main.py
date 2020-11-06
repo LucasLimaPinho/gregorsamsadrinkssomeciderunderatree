@@ -18,6 +18,8 @@ from kafka import KafkaProducer
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
+import time
+
 
 SCHEMA_REST = ""
 schemas_local = {}
@@ -113,7 +115,10 @@ def send_message(rows):
         columns = row.split("|")
         message = {k: columns[i] for i, k in enumerate(keys2)}
         message['extraInfo'] = {"version": "hub_agregacao_streaming_v1"}
-        message['timestamp'] = dt.datetime.now().replace(second=0, microsecond=0).isoformat()
+        tempo_str =str(dt.datetime.now().replace(second=0,microsecond=0))
+        date_time_string =time.strptime(tempo_str, '%Y-%m-%d %H:%M:%S')
+        epoch_timestamp =int(time.mktime(date_time_string))*1000
+        message['timestamp'] = str(epoch_timestamp)
         producer2.send(config.TOPIC_SAIDA, message)
         producer2.flush()
 
