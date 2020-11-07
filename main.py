@@ -89,6 +89,14 @@ def request_counting(partitions):
 def build_row(value):
     try:
 
+        epoch_kibana =value['timestamp']
+        epoch_kibana_sem_3_digitos = epoch_kibana[:-3]
+        timestamp_kibana = datetime.fromtimestamp(float(epoch_kibana_sem_3_digitos)).strftime("%Y-%m-%d %H:%M")
+        tempo_str = str(timestamp_kibana) + ':00'
+        date_time_string = time.strptime(tempo_str, '%Y-%m-%d %H:%M:%S')
+        epoch_timestamp = str(time.mktime(date_time_string)) + '000'
+        value['timestamp'] = epoch_timestamp
+
         if (
                 value is not None
                 and value["apiEntrypointName"] not in [None, "description"]
@@ -115,10 +123,6 @@ def send_message(rows):
         columns = row.split("|")
         message = {k: columns[i] for i, k in enumerate(keys2)}
         message['extraInfo'] = {"version": "hub_agregacao_streaming_v1"}
-        tempo_str =str(dt.datetime.now().replace(second=0,microsecond=0))
-        date_time_string =time.strptime(tempo_str, '%Y-%m-%d %H:%M:%S')
-        epoch_timestamp =int(time.mktime(date_time_string))*1000
-        message['timestamp'] = str(epoch_timestamp)
         producer2.send(config.TOPIC_SAIDA, message)
         producer2.flush()
 
