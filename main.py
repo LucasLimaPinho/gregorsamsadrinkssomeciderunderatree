@@ -206,7 +206,7 @@ def create_context():
 
     kvs0 = kvs.mapPartitions(initialization)
     kvs1 = kvs0.filter(lambda row: row is not None)
-    kvs2 = kvs1.reduceByKeyAndWindow(lambda x, y: x + y, lambda x, y: x - y, 2, 2)
+    kvs2 = kvs1.reduceByKey(lambda x, y: x + y)
     kvs3 = kvs2.mapPartitions(request_counting)
     kvs4 = kvs3.foreachRDD(lambda rdd: rdd.foreachPartition(send_message))
 
